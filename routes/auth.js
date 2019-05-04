@@ -22,7 +22,7 @@ authRouter.get('/signin', (req, res) => {
 // and redirects the browser to the home page.
 authRouter.get('/callback', (req, res, next) => {
   getTokenFromCode(req.query.code, (authenticationError, token) => {
-    console.log('entered')
+    console.log('entered');
     if (token) {
       // Request this subscription to expire one day from now.
       // Note: 1 day = 86400000 milliseconds

@@ -4,7 +4,7 @@ import http from 'http';
 import { getData } from '../helpers/requestHelper';
 import { getSubscription } from '../helpers/dbHelper';
 import { subscriptionConfiguration } from '../constants';
-import { itsTimeToVulture } from '../helpers/scraper'
+import { itsTimeToVulture } from '../helpers/scraper';
 
 export const listenRouter = express.Router();
 
@@ -69,7 +69,7 @@ function processNotification(subscriptionId, resource, res, next) {
         subscriptionData.accessToken,
         (requestError, endpointData) => {
           if (endpointData) {
-            itsTimeToVulture(findHours(endpointData)).catch(error => console.log(error))
+            itsTimeToVulture(findHours(endpointData)).catch(error => console.log(error));
           } else if (requestError) {
             res.status(500);
             next(requestError);
@@ -84,24 +84,24 @@ function processNotification(subscriptionId, resource, res, next) {
 }
 
 const findHours = (mailData) => {
-  let hours = []
+  let hours = [];
 
   if (mailData.from.emailAddress.address == 'ahmad_zafar@outlook.com'
       && mailData.subject.includes('Hours Changed'))
   {
     let body = mailData.body.content;
-    let lines = body.split('\n')
+    let lines = body.split('\n');
 
     lines.forEach((line) => {
       if (line.includes('AVAILABLE')) {
-        var tokenizedLine = line.split(' ')
+        var tokenizedLine = line.split(' ');
         hours.push({
           date: tokenizedLine[tokenizedLine.length - 1],
           from: (tokenizedLine[0] + tokenizedLine[1]),
           to: (tokenizedLine[3] + tokenizedLine[4])
-        })
+        });
       }
-    })
+    });
   }
-  return hours
+  return hours;
 }
