@@ -1,10 +1,10 @@
 import express from 'express';
 import http from 'http';
 
-import { ioServer } from '../helpers/socketHelper';
 import { getData } from '../helpers/requestHelper';
 import { getSubscription } from '../helpers/dbHelper';
 import { subscriptionConfiguration } from '../constants';
+import { itsTimeToVulture } from '../helpers/scraper'
 
 export const listenRouter = express.Router();
 
@@ -60,7 +60,7 @@ listenRouter.post('/', (req, res, next) => {
 
 // Get subscription data from the database
 // Retrieve the actual mail message data from Office 365.
-// Send the message data to the socket.
+// Send the message data to be vultured
 function processNotification(subscriptionId, resource, res, next) {
   getSubscription(subscriptionId, (dbError, subscriptionData) => {
     if (subscriptionData) {
@@ -69,7 +69,7 @@ function processNotification(subscriptionId, resource, res, next) {
         subscriptionData.accessToken,
         (requestError, endpointData) => {
           if (endpointData) {
-            ioServer.to(subscriptionId).emit('notification_received', endpointData);
+            itsTimeToVulture(findHours(endpointData)).catch(error => console.log(error))
           } else if (requestError) {
             res.status(500);
             next(requestError);
@@ -81,4 +81,27 @@ function processNotification(subscriptionId, resource, res, next) {
       next(dbError);
     }
   });
+}
+
+const findHours = (mailData) => {
+  let hours = []
+
+  if (mailData.from.emailAddress.address == 'ahmad_zafar@outlook.com'
+      && mailData.subject.includes('Hours Changed'))
+  {
+    let body = mailData.body.content;
+    let lines = body.split('\n')
+
+    lines.forEach((line) => {
+      if (line.includes('AVAILABLE')) {
+        var tokenizedLine = line.split(' ')
+        hours.push({
+          date: tokenizedLine[tokenizedLine.length - 1],
+          from: (tokenizedLine[0] + tokenizedLine[1]),
+          to: (tokenizedLine[3] + tokenizedLine[4])
+        })
+      }
+    })
+  }
+  return hours
 }
