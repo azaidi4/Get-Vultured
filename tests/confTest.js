@@ -7,7 +7,7 @@ describe('ADAL', function () { // eslint-disable-line no-undef
     function () {
       assert(
         isADALConfigured(conf.adalConfiguration),
-        '\nRegister clientID and clientSecret in file constants.js.\n' +
+        '\nRegisters clientID and clientSecret in file constants.js.\n' +
         'You don\'t have them? Get them by using the Office 365 app registration tool\n' +
         'http://dev.office.com/app-registration\n' +
         'App type: Web App\n' +
