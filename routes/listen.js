@@ -69,28 +69,36 @@ function processNotification(subscriptionId, resource, res, next) {
         subscriptionData.accessToken,
         (requestError, endpointData) => {
           if (endpointData) {
-            itsTimeToVulture(findHours(endpointData)).catch(error => console.log(error));
+            const hours = findHours(endpointData);
+            if (hours) {
+              itsTimeToVulture(hours)
+              .then(() => console.log('picked up'))
+              .catch(error => console.log(error));
+            }
           } else if (requestError) {
             res.status(500);
+            console.log(requestError)
             next(requestError);
           }
         }
       );
     } else if (dbError) {
       res.status(500);
+      console.log(dbError)
       next(dbError);
     }
   });
 }
 
 const findHours = (mailData) => {
-  let hours = [];
+  let hours;
 
-  if (mailData.from.emailAddress.address == 'ahmad_zafar@outlook.com'
-      && mailData.subject.includes('Hours Changed'))
+  if (mailData.from.emailAddress.address == 'consults@cae.wisc.edu'
+      && !mailData.subject.includes('Ahmad Zaidi'))
   {
     let body = mailData.body.content;
     let lines = body.split('\n');
+    hours = []
 
     lines.forEach((line) => {
       if (line.includes('AVAILABLE')) {
@@ -102,6 +110,9 @@ const findHours = (mailData) => {
         });
       }
     });
+  }
+  else {
+    console.log('Email != consults@cae.wisc.edu OR Subject != Hours changed')
   }
   return hours;
 }

@@ -22,7 +22,6 @@ authRouter.get('/signin', (req, res) => {
 // and redirects the browser to the home page.
 authRouter.get('/callback', (req, res, next) => {
   getTokenFromCode(req.query.code, (authenticationError, token) => {
-    console.log('entered');
     if (token) {
       // Request this subscription to expire one day from now.
       // Note: 1 day = 86400000 milliseconds
@@ -47,12 +46,14 @@ authRouter.get('/callback', (req, res, next) => {
             );
           } else if (requestError) {
             res.status(500);
+            console.log(requestError)
             next(requestError);
           }
         }
       );
     } else if (authenticationError) {
       res.status(500);
+      console.log(authRouter)
       next(authenticationError);
     }
   });
@@ -76,6 +77,7 @@ authRouter.get('/signout/:subscriptionId', (req, res) => {
       );
     } else if (dbError) {
       res.status(500);
+      console.log(dbError)
       next(dbError);
     }
   });

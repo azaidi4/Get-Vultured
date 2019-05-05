@@ -1,11 +1,12 @@
-<head>
-  <title>Microsoft Graph Webhook</title>
+<!-- <head>
+  <title>Get Vultured</title>
 
-  <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.min.css" />
-  <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.components.min.css" />
+  <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" />
+  <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
 </head>
 
 <body>
+<div class="mui-container">
 <p>Listening to Webhook</p>
 <p>Subscription Id: <b id="subscriptionId"></b></p>
 <p>Now send an email to <b id="userId"></b> to get an email notification which will show below.</p>
@@ -14,4 +15,131 @@
 
 <button id="signOutButton">Sign out and delete the subscription</button>
 <script type="text/javascript" src="/client.js"></script>
+</div>
+</body> -->
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get Vultured</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="//cdn.muicss.com/mui-0.9.41/extra/mui-colors.min.css">
+  <script src="//cdn.muicss.com/mui-0.9.41/extra/mui-combined.min.js"></script>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    html,
+    body,
+    input,
+    textarea,
+    button {
+      font-family: 'Courier New', Courier, monospace;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+    }
+
+
+    /**
+    * Header CSS
+    */
+    header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 2;
+    }
+
+    header ul.mui-list--inline {
+      margin-bottom: 0;
+    }
+
+    header a {
+      color: #fff;
+    }
+
+    header table {
+      width: 100%;
+    }
+
+    .mui--text-title {
+      color: #fff
+    }
+
+    /**
+    * Content CSS
+    */
+    #content-wrapper {
+      min-height: 100%;
+
+      /* sticky footer */
+      box-sizing: border-box;
+      margin-bottom: -100px;
+      padding-bottom: 100px;
+    }
+
+
+    /**
+    * Footer CSS
+    */
+    footer {
+      box-sizing: border-box;
+      height: 100px;
+      background-color: #eee;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 35px;
+    }
+
+    img {
+      height: 40%;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="mui-appbar mui--z1">
+    <div class="mui-container">
+      <table>
+        <tr class="mui--appbar-height">
+          <td class="mui--text-title">Vulture Active</td>
+        </tr>
+      </table>
+    </div>
+    <div class="mui--bg-primary-light" style="height:10px;"></div>
+  </header>
+  <div id="content-wrapper" class="mui--text-center">
+    <div class="mui--appbar-height"></div>
+    <br>
+    <br>
+    <div class="mui--text-display3 row wow zoomInDown">Vulture is Active</div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="mui-panel">
+      <p>Listening to shift changes at: <b id="userId"></b>
+      <p>Subscription Id: <b id="subscriptionId"></b></p>
+    </div>
+    <br><br>
+    <button id="signOutButton" class="mui-btn mui-btn--raised mui-btn--danger">Stop Vulture</button>
+  </div>
+  <footer>
+    <div class="mui-container mui--text-center">
+      Made with ♥ by <a href="https://www.muicss.com">MUICSS</a>
+    </div>
+  </footer>
+  <script type="text/javascript" src="/client.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+  <script>
+    new WOW().init();
+  </script>
 </body>
+
+</html>

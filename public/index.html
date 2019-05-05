@@ -1,11 +1,127 @@
+<html>
+
 <head>
-  <title>Microsoft Graph Webhook</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get Vultured</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="//cdn.muicss.com/mui-0.9.41/extra/mui-colors.min.css">
+  <script src="//cdn.muicss.com/mui-0.9.41/extra/mui-combined.min.js"></script>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    html,
+    body,
+    input,
+    textarea,
+    button {
+      font-family:'Courier New', Courier, monospace;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+    }
+
+    .mui-btn {
+      background-color: #33A532;
+      color: #fff;
+    }
+
+    /**
+    * Header CSS
+    */
+    header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 2;
+    }
+
+    header ul.mui-list--inline {
+      margin-bottom: 0;
+    }
+
+    header a {
+      color: #fff;
+    }
+
+    header table {
+      width: 100%;
+    }
+    
+    .mui--text-title {
+      color: #fff
+    }
+
+    /**
+    * Content CSS
+    */
+    #content-wrapper {
+      min-height: 100%;
+
+      /* sticky footer */
+      box-sizing: border-box;
+      margin-bottom: -100px;
+      padding-bottom: 100px;
+    }
+
+
+    /**
+    * Footer CSS
+    */
+    footer {
+      box-sizing: border-box;
+      height: 100px;
+      background-color: #eee;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 35px;
+    }
+    img {
+      height: 40%;
+    }
+  </style>
 </head>
 
 <body>
-<button onclick="location.href='/signin'">
-  Sign in with a work or school account
-</button>
-
-<p>Once signing in, the app gets an accessToken which is used to subscribe <b>me/mailFolders('Inbox')/messages</b>.
+  <header class="mui-appbar mui--z1">
+   <div class="mui-container">
+     <table>
+       <tr class="mui--appbar-height">
+         <td class="mui--text-title">Get Vultured</td>
+       </tr>
+     </table>
+   </div>
+   <div class="mui--bg-primary-light" style="height:10px;"></div>
+  </header>
+  <div id="content-wrapper" class="mui--text-center">
+    <div class="mui--appbar-height"></div>
+    <br>
+    <br>
+    <div class="mui--text-display3 row wow zoomInDown">Vulture API</div>
+    <br>
+    <br>
+    <button class="mui-btn mui-btn--raised" onclick="location.href='/signin'">vul7ur3 T1m3</button>
+    <br>
+    <br>
+    <img
+      class="row wow zoomIn" aria-hidden="true"
+      src="data:image/svg+xml;base64,
+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMzkxLjExMyAzOTEuMTEzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAzOTEuMTEzIDM5MS4xMTM7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgY2xhc3M9IiI+PGc+PGc+Cgk8cGF0aCBzdHlsZT0iZmlsbDojQTNBMUExIiBkPSJNMzQwLjMxLDE5NS41NTFjMCw5My45OC03Ni4xOCwxNzAuMTYtMTcwLjE2LDE3MC4xNmMtMzYuMjQsMC02OS44Mi0xMS4zMy05Ny40MS0zMC42NCAgIEMyOC43NiwzMDQuMzIxLDAsMjUzLjI5MSwwLDE5NS41NTFjMC0zMi41Niw5LjE0LTYyLjk4LDI1LTg4LjgzYzI5LjkyLTQ4Ljc4LDgzLjc0LTgxLjMyLDE0NS4xNS04MS4zMiAgIEMyNjQuMTMsMjUuNDAxLDM0MC4zMSwxMDEuNTgxLDM0MC4zMSwxOTUuNTUxeiIgZGF0YS1vcmlnaW5hbD0iI0MxMjcyRCIgY2xhc3M9IiIgZGF0YS1vbGRfY29sb3I9IiNBNEEzQTMiPjwvcGF0aD4KCTxwYXRoIHN0eWxlPSJmaWxsOiM2NjY2NjY7IiBkPSJNMzg4LjUxLDE2NC43OTFjMCwwLDMuNzUtMjMuODktNDcuMzctMzAuMThjMS43NC0xNi4wMi0wLjg2LTM2LjQ5LTAuODYtMzYuNDlsMjUuNywxMi4xNCAgIEMzODYuNDEsMTE5LjkyMSwzOTYuMTcsMTQzLjUyMiwzODguNTEsMTY0Ljc5MXoiIGRhdGEtb3JpZ2luYWw9IiM2NjY2NjYiIGNsYXNzPSIiPjwvcGF0aD4KCTxwYXRoIHN0eWxlPSJmaWxsOiM0RDRENEQiIGQ9Ik0zODguNTEsMTY0Ljc5MWMtNC4yLTMuMTktOC42Mi01Ljk3LTEzLjE3LTguMzljLTAuNy0wLjM3LTEuNC0wLjc0LTIuMTEtMS4wOSAgIGMtMTAuNzctNS40Mi0yMi4yMS03Ljk3LTMzLjQ5LTcuOTdjLTAuNTQsMC0xLjA4LDAuMDEtMS42MiwwLjAyYzEuNTQtMy4zNSwyLjQ4LTcuODQsMy4wMi0xMi43NHYtMC4wMSAgIEMzOTIuMjYsMTQwLjkwMSwzODguNTEsMTY0Ljc5MSwzODguNTEsMTY0Ljc5MXoiIGRhdGEtb3JpZ2luYWw9IiM0RDRENEQiIGNsYXNzPSIiPjwvcGF0aD4KCTxwYXRoIHN0eWxlPSJmaWxsOiNENkJEQUIiIGQ9Ik0zMzguMTE3LDE0Ny4zNjFjLTI3LjQ4LDAuNTktNDMuNDUtNS41NC02Ni42Myw0Mi43NGMtMTYuMjIzLDMzLjc5LTYwLjcsNDEuOTgtODguMTgsMTYuNSAgIGwtMjcuMjktMjUuMzFsMjctNjEuNWwyMS4zOSwyOC4yYzUuMzMsNy4wMywxNi4yLDUuOTksMjAuMDktMS45M2wxNy4zOS0zNS4zYzEzLjExLTI2LjYyLDQ1LjE0LTM3LjgsNzEuOTYtMjUuMTJsMjYuNDMsMTIuNDggICBDMzQwLjI3Nyw5OC4xMjEsMzQ0LjcxNywxMzMuMDUxLDMzOC4xMTcsMTQ3LjM2MXoiIGRhdGEtb3JpZ2luYWw9IiNCQUEyOEUiIGNsYXNzPSJhY3RpdmUtcGF0aCIgZGF0YS1vbGRfY29sb3I9IiNEN0MyQjIiPjwvcGF0aD4KCTxjaXJjbGUgc3R5bGU9ImZpbGw6IzRENEQ0RCIgY3g9IjMxMi4xOCIgY3k9IjExMi45OTUiIHI9IjcuMzMzIiBkYXRhLW9yaWdpbmFsPSIjNEQ0RDREIiBjbGFzcz0iIj48L2NpcmNsZT4KCTxwYXRoIHN0eWxlPSJmaWxsOiM0RDRENEQiIGQ9Ik0xOTUuNDQsMTE3LjE5MWwtMTIyLjcsMjE3Ljg4QzI4Ljc2LDMwNC4zMjEsMCwyNTMuMjkxLDAsMTk1LjU1MWMwLTMyLjU2LDkuMTQtNjIuOTgsMjUtODguODMgICBjNDkuMDYtOS41LDk2LjU4LTIyLjE5LDEzMy4wNS0zMi45MkMxODMuOTgsNjYuMTYxLDIwNi44MSw5Mi42NzEsMTk1LjQ0LDExNy4xOTF6IiBkYXRhLW9yaWdpbmFsPSIjQ0NCQUFDIiBjbGFzcz0iIiBkYXRhLW9sZF9jb2xvcj0iI0NDQkFBQyI+PC9wYXRoPgo8L2c+PC9nPiA8L3N2Zz4=" />
+  </div>
+  <footer>
+    <div class="mui-container mui--text-center">
+      Made with ♥ by <a href="https://www.muicss.com">MUICSS</a>
+    </div>
+  </footer>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+  <script>
+    new WOW().init();
+  </script>
 </body>
+
+</html>

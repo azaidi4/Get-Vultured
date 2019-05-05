@@ -3,10 +3,8 @@ const moment = require('moment');
 const hours = require('./hours');
 
 exports.itsTimeToVulture = async (droppedShifts) => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--no-sandbox']
-  });
+  console.log(droppedShifts)
+  const browser = await puppeteer.launch({args: ['--no-sandbox']});
   const page = await browser.newPage();
   await page.goto('https://scheduler.engr.wisc.edu');
 
@@ -28,6 +26,7 @@ exports.itsTimeToVulture = async (droppedShifts) => {
     });
   }, getIndices(droppedShifts));
   await page.click('input[type=submit]');
+  await browser.close()
 };
 
 function getIndices(shifts) {
