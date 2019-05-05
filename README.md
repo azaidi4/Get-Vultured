@@ -22,7 +22,7 @@ BODY:     8:00 am - 9:00 am AVAILABLE on SUN, 05/05/2019
  ## Usage
  
  1. Sign in with your **work** email.
- 2. That all!! Vulture will automatically pick up shifts when someone drops them.
+ 2. That's all!! Vulture will automatically pick up shifts when someone drops them.
  3. To stop Vulture, press the big **red** button, you know which one...
  
  ## Acknowledgements
