@@ -4,29 +4,29 @@ const hours = require('./hours');
 
 exports.itsTimeToVulture = async (droppedShifts) => {
   console.log(droppedShifts)
-  const browser = await puppeteer.launch({args: ['--no-sandbox']});
+  const browser = await puppeteer.launch({headless:false, args: ['--no-sandbox']});
   const page = await browser.newPage();
   await page.goto('https://scheduler.engr.wisc.edu');
 
   await page.type('#j_username', process.env.USER);
   await page.type('#j_password', process.env.PASS);
 
-  await Promise.all([
-    page.waitForSelector('.footer'),
-    page.click('button[type=submit]')
-  ]);
-
-  await page.$$eval('.timeslot', (timeslots, week) => {
+  await page.click('button[type=submit]'),
+  await page.waitForSelector('input[name*=schedadd]').then(async () => {
+   await page.$$eval('.timeslot', (timeslots, week) => {
     week.forEach((day, index) => {
       if (day) {
-        day.forEach(shift => {
-          timeslots[index].children.item(shift).querySelector('input[name*=schedadd]').setAttribute('checked', true);
-        });
-      }
-    });
-  }, getIndices(droppedShifts));
-  await page.click('input[type=submit]');
-  await browser.close()
+          day.forEach(shift => {
+            timeslots[index].children.item(shift).querySelector('input[name*=schedadd]').setAttribute('checked', true);
+          });
+        }
+      });
+    }, getIndices(droppedShifts));
+  })
+
+ 
+  // await page.click('input[type=submit]');
+  // await browser.close()
 };
 
 function getIndices(shifts) {
