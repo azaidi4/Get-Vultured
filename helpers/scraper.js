@@ -13,7 +13,7 @@ exports.itsTimeToVulture = async (droppedShifts) => {
 
   await Promise.all([
     page.waitForSelector('.footer'),
-    page.click('button[type=submit]'),
+    page.click('button[type=submit]')
   ]);
 
   await page.$$eval('.timeslot', (timeslots, week) => {
@@ -25,8 +25,8 @@ exports.itsTimeToVulture = async (droppedShifts) => {
       }
     });
   }, getIndices(droppedShifts));
-  // await page.click('input[type=submit]');
-  // await browser.close()
+  await page.click('input[type=submit]');
+  await browser.close()
 };
 
 function getIndices(shifts) {
