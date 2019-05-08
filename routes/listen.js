@@ -1,9 +1,9 @@
 import express from 'express';
 import http from 'http';
 
+import { subscriptionConfiguration } from '../constants';
 import { getData } from '../helpers/requestHelper';
 import { getSubscription } from '../helpers/dbHelper';
-import { subscriptionConfiguration } from '../constants';
 import { itsTimeToVulture } from '../helpers/scraper';
 
 export const listenRouter = express.Router();
@@ -72,8 +72,8 @@ function processNotification(subscriptionId, resource, res, next) {
             const hours = findHours(endpointData);
             if (hours) {
               itsTimeToVulture(hours)
-              .then(() => console.log('picked up'))
-              .catch(error => console.log(error));
+                .then(() => console.log('picked up'))
+                .catch(error => console.log(error));
             }
           } else if (requestError) {
             res.status(500);
@@ -92,10 +92,11 @@ function processNotification(subscriptionId, resource, res, next) {
 
 const findHours = (mailData) => {
   let hours;
+  let sender = mailData.from.emailAddress.address;
+  let subject = mailData.subject.split(' ');
+  let dropee = `${subject[3]} ${subject[4]}`;
 
-  if (mailData.from.emailAddress.address == 'consults@cae.wisc.edu'
-      && !mailData.subject.includes('Ahmad Zaidi'))
-  {
+  if (sender === 'consults@cae.wisc.edu' && dropee != 'Ahmad Zaidi') {
     let body = mailData.body.content;
     let lines = body.split('\n');
     hours = []
@@ -110,9 +111,13 @@ const findHours = (mailData) => {
         });
       }
     });
-  }
-  else {
-    console.log('Email != consults@cae.wisc.edu OR Subject != Hours changed')
+  } else {
+    if (sender != 'consults@cae.wisc.edu') {
+      console.error(`Sender should be consults@cae.wisc.edu, not ${sender}`)
+    }
+    if (dropee === 'Ahmad Zaidi') {
+      console.error(`If I picked your own shifts it would ruin the point, ${dropee}`)
+    }
   }
   return hours;
 }

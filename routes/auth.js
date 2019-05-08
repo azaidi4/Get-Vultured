@@ -4,6 +4,7 @@ import { getSubscription, saveSubscription, deleteSubscription } from '../helper
 import { getAuthUrl, getTokenFromCode } from '../helpers/authHelper';
 import { postData, deleteData } from '../helpers/requestHelper';
 import { subscriptionConfiguration } from '../constants';
+import * as moment from 'moment';
 
 export const authRouter = express.Router();
 
@@ -24,12 +25,12 @@ authRouter.get('/callback', (req, res, next) => {
   getTokenFromCode(req.query.code, (authenticationError, token) => {
     if (token) {
       // Request this subscription to expire one day from now.
-      // Note: 1 day = 86400000 milliseconds
-      subscriptionConfiguration.expirationDateTime = new Date(Date.now() + 86400000).toISOString();
+      // subscriptionConfiguration.expirationDateTime = new Date(Date.now() + 100000).toISOString();
+      subscriptionConfiguration.expirationDateTime = moment.utc().add(4230, 'm')
 
       // Make the request to subscription service.
       postData(
-        '/beta/subscriptions',
+        "/v1.0/subscriptions",
         token.accessToken,
         JSON.stringify(subscriptionConfiguration),
         (requestError, subscriptionData) => {
