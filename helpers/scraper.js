@@ -25,8 +25,8 @@ exports.itsTimeToVulture = async (droppedShifts) => {
       }
     });
   }, getIndices(droppedShifts));
-  await page.click('input[type=submit]');
-  await browser.close()
+  // await page.click('input[type=submit]');
+  // await browser.close()
 };
 
 function getIndices(shifts) {

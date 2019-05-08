@@ -96,7 +96,7 @@ const findHours = (mailData) => {
   let subject = mailData.subject.split(' ');
   let dropee = `${subject[3]} ${subject[4]}`;
 
-  if (sender === 'consults@cae.wisc.edu' && dropee != 'Ahmad Zaidi') {
+  if (sender === 'ahmad_zafar@outlook.com' ) {
     let body = mailData.body.content;
     let lines = body.split('\n');
     hours = []
