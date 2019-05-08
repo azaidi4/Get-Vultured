@@ -1,4 +1,5 @@
-require('dotenv').config();
+// Uncomment for development
+// require('dotenv').config();
 
 exports.adalConfiguration = {
   authority: 'https://login.microsoftonline.com/common',
