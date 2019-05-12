@@ -1,106 +1,46 @@
-import fs from 'fs';
-import sql from 'sqlite3';
+require('dotenv').config()
 
-const dbFile = './helpers/database.sqlite3';
-const sqlite3 = sql.verbose();
+import mongoose from 'mongoose';
+const uri = process.env.DB_URI;
+const SubscriptionSchema = new mongoose.Schema({
+  userId: String,
+  subscriptionId: String,
+  accessToken: String,
+  resource: String,
+  clientState: String,
+  changeType: String,
+  notificationUrl: String,
+  subscriptionExpirationDateTime: String
+})
+
+const Subscription = mongoose.model('Subscription', SubscriptionSchema);
 
 /**
- * Create SQLite3 table Subscription.
+ * Create MongoDB
  */
 export function createDatabase() {
-  const dbExists = fs.existsSync(dbFile);
-  const db = new sqlite3.Database(dbFile);
-  const createSubscriptionStatement =
-    'CREATE TABLE Subscription (' +
-    'UserId TEXT NOT NULL, ' +
-    'SubscriptionId TEXT NOT NULL, ' +
-    'AccessToken TEXT NOT NULL, ' +
-    'Resource TEXT NOT NULL, ' +
-    'ChangeType TEXT NOT NULL, ' +
-    'ClientState TEXT NOT NULL, ' +
-    'NotificationUrl TEXT NOT NULL, ' +
-    'SubscriptionExpirationDateTime TEXT NOT NULL' +
-    ')';
-
-  db.serialize(() => {
-    if (!dbExists) {
-      db.run(
-        createSubscriptionStatement,
-        [],
-        error => {
-          if (error !== null) throw error;
-        }
-      );
-    }
-  });
-  db.close();
+  return mongoose.connect(uri, { useNewUrlParser: true })
 }
 
 export function getSubscription(subscriptionId, callback) {
-  const db = new sqlite3.Database(dbFile);
-  const getUserDataStatement =
-    'SELECT ' +
-    'UserId as userId, ' +
-    'SubscriptionId as subscriptionId, ' +
-    'AccessToken as accessToken, ' +
-    'Resource as resource, ' +
-    'ChangeType as changeType, ' +
-    'ClientState as clientState, ' +
-    'NotificationUrl as notificationUrl, ' +
-    'SubscriptionExpirationDateTime as subscriptionExpirationDateTime ' +
-    'FROM Subscription ' +
-    'WHERE SubscriptionId = $subscriptionId ' +
-    'AND SubscriptionExpirationDateTime > datetime(\'now\')';
-
-  db.serialize(() => {
-    db.get(
-      getUserDataStatement,
-      {
-        $subscriptionId: subscriptionId
-      },
-      callback
-    );
-  });
+  Subscription.findOne({subscriptionId: subscriptionId}, callback)
 }
 
 export function saveSubscription(subscriptionData, callback) {
-  const db = new sqlite3.Database(dbFile);
-  const insertStatement =
-    'INSERT INTO Subscription ' +
-    '(UserId, SubscriptionId, AccessToken, Resource, ChangeType, ' +
-    'ClientState, NotificationUrl, SubscriptionExpirationDateTime) ' +
-    'VALUES ($userId, $subscriptionId, $accessToken, $resource, $changeType, ' +
-    '$clientState, $notificationUrl, $subscriptionExpirationDateTime)';
-
-  db.serialize(() => {
-    db.run(
-      insertStatement,
-      {
-        $userId: subscriptionData.userId,
-        $subscriptionId: subscriptionData.id,
-        $accessToken: subscriptionData.accessToken,
-        $resource: subscriptionData.resource,
-        $clientState: subscriptionData.clientState,
-        $changeType: subscriptionData.changeType,
-        $notificationUrl: subscriptionData.notificationUrl,
-        $subscriptionExpirationDateTime: subscriptionData.expirationDateTime
-      },
-      callback
-    );
-  });
+  Subscription.create({
+    userId: subscriptionData.userId,
+    subscriptionId: subscriptionData.id,
+    accessToken: subscriptionData.accessToken,
+    resource: subscriptionData.resource,
+    clientState: subscriptionData.clientState,
+    changeType: subscriptionData.changeType,
+    notificationUrl: subscriptionData.notificationUrl,
+    subscriptionExpirationDateTime: subscriptionData.expirationDateTime
+  }, callback);  
 }
 
-export function deleteSubscription(subscriptionId, callback) {
-  const db = new sqlite3.Database(dbFile);
-  const deleteStatement =
-    'DELETE FROM Subscription WHERE ' +
-    'SubscriptionId = $subscriptionId';
-
-  db.serialize(() => {
-    db.run(
-      deleteStatement,
-      { $subscriptionId: subscriptionId },
-      callback
-    );
+export function deleteSubscription(subscriptionId) {
+  Subscription.deleteOne({subscriptionId: subscriptionId}, function (err) {
+    if (!err) console.log('Deleted Subscription ' + subscriptionId)
   });
 }

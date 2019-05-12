@@ -47,14 +47,12 @@ authRouter.get('/callback', (req, res, next) => {
             );
           } else if (requestError) {
             res.status(500);
-            console.log(requestError)
             next(requestError);
           }
         }
       );
     } else if (authenticationError) {
       res.status(500);
-      console.log(authRouter)
       next(authenticationError);
     }
   });
@@ -73,12 +71,11 @@ authRouter.get('/signout/:subscriptionId', (req, res) => {
         `/beta/subscriptions/${req.params.subscriptionId}`,
         subscriptionData.accessToken,
         error => {
-          if (!error) deleteSubscription(req.params.subscriptionId, null);
+          if (!error) deleteSubscription(req.params.subscriptionId);
         }
       );
     } else if (dbError) {
       res.status(500);
-      console.log(dbError)
       next(dbError);
     }
   });

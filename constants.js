@@ -9,7 +9,7 @@ exports.adalConfiguration = {
 };
 exports.subscriptionConfiguration = {
   changeType: 'Created',
-  notificationUrl: (process.env.NODE_ENV == 'production') ? 'https://get-vultured.herokuapp.com/listen' : 'https://1244ebe0.ngrok.io/listen',
+  notificationUrl: (process.env.NODE_ENV == 'production') ? 'https://get-vultured.herokuapp.com/listen' : 'https://modus.serveo.net/listen',
   resource: 'me/mailFolders(\'Inbox\')/messages',
   clientState: process.env.CLIENT_STATE
 };

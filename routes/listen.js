@@ -77,14 +77,12 @@ function processNotification(subscriptionId, resource, res, next) {
             }
           } else if (requestError) {
             res.status(500);
-            console.log(requestError)
             next(requestError);
           }
         }
       );
     } else if (dbError) {
       res.status(500);
-      console.log(dbError)
       next(dbError);
     }
   });
