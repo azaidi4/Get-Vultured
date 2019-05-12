@@ -4,7 +4,9 @@ const hours = require('./hours');
 
 exports.itsTimeToVulture = async (droppedShifts) => {
   console.log(droppedShifts)
-  const browser = await puppeteer.launch({headless: false, args: ['--no-sandbox']});
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
   await page.goto('https://scheduler.engr.wisc.edu/worklocation/detail/1-' +  moment(droppedShifts[0].date).format('YYYY-MM-DD'));
 
