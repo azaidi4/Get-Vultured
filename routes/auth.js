@@ -24,8 +24,8 @@ authRouter.get('/signin', (req, res) => {
 authRouter.get('/callback', (req, res, next) => {
   getTokenFromCode(req.query.code, (authenticationError, token) => {
     if (token) {
-      subscriptionConfiguration.expirationDateTime = moment.utc().add(4230, 'm');
-      
+      subscriptionConfiguration.expirationDateTime = moment.utc().add(4230, 'm').format();
+
       // Make the request to subscription service.
       postData(
         '/v1.0/subscriptions',
@@ -103,12 +103,12 @@ authRouter.get('/updateSubscriptions', (req, res, next) => {
                 console.log(requestError)
                 next(requestError);
               }
-            }          
+            }
           );
-        }    
+        }
         else {
           res.send('Time difference should < 1 hour before update')
-        }   
+        }
       }
     }
     else {
