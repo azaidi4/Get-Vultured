@@ -1,10 +1,10 @@
 import express from 'express';
 
-import { getSubscription, saveSubscription, deleteSubscription } from '../helpers/dbHelper';
+import { getSubscription, saveSubscription, updateSubscription, deleteSubscription, getAllSubscriptions } from '../helpers/dbHelper';
 import { getAuthUrl, getTokenFromCode } from '../helpers/authHelper';
-import { postData, deleteData } from '../helpers/requestHelper';
+import { postData, deleteData, updateData } from '../helpers/requestHelper';
 import { subscriptionConfiguration } from '../constants';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export const authRouter = express.Router();
 
@@ -24,10 +24,8 @@ authRouter.get('/signin', (req, res) => {
 authRouter.get('/callback', (req, res, next) => {
   getTokenFromCode(req.query.code, (authenticationError, token) => {
     if (token) {
-      // Request this subscription to expire one day from now.
-      // subscriptionConfiguration.expirationDateTime = new Date(Date.now() + 100000).toISOString();
       subscriptionConfiguration.expirationDateTime = moment.utc().add(4230, 'm');
-
+      
       // Make the request to subscription service.
       postData(
         '/v1.0/subscriptions',
@@ -68,7 +66,7 @@ authRouter.get('/signout/:subscriptionId', (req, res) => {
   getSubscription(req.params.subscriptionId, (dbError, subscriptionData, next) => {
     if (subscriptionData) {
       deleteData(
-        `/beta/subscriptions/${req.params.subscriptionId}`,
+        `/v1.0/subscriptions/${req.params.subscriptionId}`,
         subscriptionData.accessToken,
         error => {
           if (!error) deleteSubscription(req.params.subscriptionId);
@@ -81,4 +79,43 @@ authRouter.get('/signout/:subscriptionId', (req, res) => {
   });
 
   res.redirect('https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=' + redirectUri);
+});
+
+authRouter.get('/updateSubscriptions', (req, res, next) => {
+  getAllSubscriptions((err, subr) => {
+    if (subr) {
+      for (let i = 0; i < subr.length; i++) {
+        let time = moment(subr[i].subscriptionExpirationDateTime);
+        if (time.diff(moment(), 'm') < 60) {
+          updateData(
+            `/v1.0/subscriptions/${subr[i].subscriptionId}`,
+            subr[i].accessToken,
+            JSON.stringify({
+              'expirationDateTime': moment.utc().add(4230, 'm').format()
+            }),
+            (requestError, updatedSubr) => {
+              if (updatedSubr) {
+                console.log(updatedSubr)
+                updateSubscription(updatedSubr);
+              }
+              else {
+                res.status(500);
+                console.log(requestError)
+                next(requestError);
+              }
+            }          
+          );
+        }    
+        else {
+          res.send('Time difference should < 1 hour before update')
+        }   
+      }
+    }
+    else {
+      res.status(500);
+      console.log(err)
+      next(err)
+    }
+  });
+  res.send('Updated').status(200);
 });

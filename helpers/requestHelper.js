@@ -100,3 +100,37 @@ export function deleteData(path, token, callback) {
 
   req.on('error', error => callback(error));
 }
+
+/**
+ * Generates a PATCH request (of Content-type ```application/json```)
+ * @param {string} path the path, relative to the host, to which this request will be sent
+ * @param {string} token the access token with which the request should be authenticated
+ * @param {string} data the data which will be 'PATCH'ed
+ * @param {callback} callback
+ */
+export function updateData(path, token, data, callback) {
+  const options = {
+    host: host,
+    path: path,
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    }
+  };
+
+  const req = https.request(options, res => {
+    let subscriptionData = '';
+
+    res.on('data', chunk => (subscriptionData += chunk));
+    res.on('end', () => {
+      if (res.statusCode === 200) callback(null, JSON.parse(subscriptionData));
+      else callback(JSON.parse(subscriptionData), null);
+    });
+  });
+
+  req.write(data);
+  req.end();
+
+  req.on('error', error => callback(error, null));
+}

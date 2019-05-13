@@ -20,11 +20,15 @@ const Subscription = mongoose.model('Subscription', SubscriptionSchema);
  */
 export function createDatabase() {
   return mongoose.connect(uri, { useNewUrlParser: true });
-}
+};
 
 export function getSubscription(subscriptionId, callback) {
   Subscription.findOne({ subscriptionId: subscriptionId }, callback);
-}
+};
+
+export function getAllSubscriptions(callback) {
+  Subscription.find({}, callback);
+};
 
 export function saveSubscription(subscriptionData, callback) {
   Subscription.create({
@@ -37,7 +41,24 @@ export function saveSubscription(subscriptionData, callback) {
     notificationUrl: subscriptionData.notificationUrl,
     subscriptionExpirationDateTime: subscriptionData.expirationDateTime
   }, callback);
-}
+};
+
+export function updateSubscription(subscriptionData) {
+  Subscription.updateOne({
+        subscriptionId: subscriptionData.id
+      }, {
+        $set: {
+          'subscriptionExpirationDateTime': subscriptionData.expirationDateTime
+        }
+      }, (err) => {
+    if (!err) {
+      console.log('Updated Subscription')
+    }
+    else {
+      console.log(err)
+    }
+  });
+};
 
 export function deleteSubscription(subscriptionId) {
   Subscription.deleteOne({ subscriptionId: subscriptionId }, function (err) {
@@ -45,4 +66,4 @@ export function deleteSubscription(subscriptionId) {
       console.log('Deleted Subscription ' + subscriptionId);
     }
   });
-}
+};
