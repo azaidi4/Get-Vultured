@@ -7,7 +7,6 @@ const hours = require('./hours');
 exports.itsTimeToVulture = async (droppedShifts) => {
   const droppedWeek = moment(droppedShifts[0].date).format('YYYY-MM-DD');
   const browser = await puppeteer.launch({
-    headless: false,
     args: ['--no-sandbox']
   });
   const page = await browser.newPage();
