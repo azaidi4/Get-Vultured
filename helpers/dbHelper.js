@@ -1,4 +1,4 @@
-// require('dotenv').config()
+require('dotenv').config();
 
 import mongoose from 'mongoose';
 const uri = process.env.DB_URI;
@@ -11,7 +11,7 @@ const SubscriptionSchema = new mongoose.Schema({
   changeType: String,
   notificationUrl: String,
   subscriptionExpirationDateTime: String
-})
+});
 
 const Subscription = mongoose.model('Subscription', SubscriptionSchema);
 
@@ -19,11 +19,11 @@ const Subscription = mongoose.model('Subscription', SubscriptionSchema);
  * Create MongoDB
  */
 export function createDatabase() {
-  return mongoose.connect(uri, { useNewUrlParser: true })
+  return mongoose.connect(uri, { useNewUrlParser: true });
 }
 
 export function getSubscription(subscriptionId, callback) {
-  Subscription.findOne({subscriptionId: subscriptionId}, callback)
+  Subscription.findOne({ subscriptionId: subscriptionId }, callback);
 }
 
 export function saveSubscription(subscriptionData, callback) {
@@ -36,11 +36,13 @@ export function saveSubscription(subscriptionData, callback) {
     changeType: subscriptionData.changeType,
     notificationUrl: subscriptionData.notificationUrl,
     subscriptionExpirationDateTime: subscriptionData.expirationDateTime
-  }, callback);  
+  }, callback);
 }
 
 export function deleteSubscription(subscriptionId) {
-  Subscription.deleteOne({subscriptionId: subscriptionId}, function (err) {
-    if (!err) console.log('Deleted Subscription ' + subscriptionId)
+  Subscription.deleteOne({ subscriptionId: subscriptionId }, function (err) {
+    if (!err) {
+      console.log('Deleted Subscription ' + subscriptionId);
+    }
   });
 }

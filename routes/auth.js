@@ -26,11 +26,11 @@ authRouter.get('/callback', (req, res, next) => {
     if (token) {
       // Request this subscription to expire one day from now.
       // subscriptionConfiguration.expirationDateTime = new Date(Date.now() + 100000).toISOString();
-      subscriptionConfiguration.expirationDateTime = moment.utc().add(4230, 'm')
+      subscriptionConfiguration.expirationDateTime = moment.utc().add(4230, 'm');
 
       // Make the request to subscription service.
       postData(
-        "/v1.0/subscriptions",
+        '/v1.0/subscriptions',
         token.accessToken,
         JSON.stringify(subscriptionConfiguration),
         (requestError, subscriptionData) => {
