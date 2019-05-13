@@ -65,7 +65,7 @@ function processNotification(subscriptionId, resource, res, next) {
   getSubscription(subscriptionId, (dbError, subscriptionData) => {
     if (subscriptionData) {
       getData(
-        `/beta/${resource}`,
+        `/v1.0/${resource}`,
         subscriptionData.accessToken,
         (requestError, endpointData) => {
           if (endpointData) {
